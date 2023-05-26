@@ -249,7 +249,7 @@ function vm_create {
     done
 
     # Set mac address selector in network-config.
-    yq -yi ".ethernets.eth0.match.macaddress = \"$mac_addr\"" cloud-init/network-config.yaml
+    yq -yi ".ethernets.eth0.match.macaddress = \"$mac_addr\"" "$sp/cloud-init/network-config.yaml"
 
     # Create virtual machine.
     virt-install \
@@ -275,7 +275,7 @@ function vm_remove {
     if is_vm; then
         echo '• Removing VM'
         virsh undefine "$name" --managed-save --snapshots-metadata | sed -e '/^[[:space:]]*$/d'
-        yq -yi ".ethernets.eth0.match.macaddress = \"\"" cloud-init/network-config.yaml
+        yq -yi ".ethernets.eth0.match.macaddress = \"\"" "$sp/cloud-init/network-config.yaml"
     fi
 }
 
